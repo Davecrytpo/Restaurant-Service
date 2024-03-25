@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./cdn/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./cdn/bootstrap/font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+    <script src="./cdn/bootstrap/js/jquery.min.js"></script>
+</head>
+<style>
+    .error{
+        color: red;
+        font-size: 18px;;
+    }
+</style>
+<body>
+    <div class="container">
+        <h3>JS Form Validation (Regular Expression)</h3>
+        <form name="contactform" onsubmit="return ValidateForm()" action="formvalidationform.html" method="post">
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <input type="text" name="name" class="form-control">
+                <div class="error" id="nameErr"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="text" name="email" id="" class="form-control">
+                <div class="error" id="emailErr"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="Phone">Phone</label>
+                <input type="text" name="phone" id="" class="form-control">
+                <div class="error" id="phoneErr"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select name="gender" class="form-control">
+                    <option value="" selected hidden disabled></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                </select>
+                <div class="error" id="genderErr"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="passport">Passport Holder</label>
+                <input type="radio" name="ph" id="" class="customer-radio" value="Yes"> Yes &nbsp;
+                <input type="radio" name="ph" id="" class="customer-radio" value="No"> No 
+                <div class="error" id="passportErr"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="">Hobbies (Optional)</label>
+                <input type="checkbox" name="hobbies[]" id="" class="customer-checkbox" value="sports"> sports &nbsp;
+                <input type="checkbox" name="hobbies[]" id="" class="customer-checkbox" value="music"> music &nbsp;
+                <input type="checkbox" name="hobbies[]" id="" class="customer-checkbox" value="reading"> Reading &nbsp;
+            </div>
+
+            <input type="submit" value="submit" class="btn btn-outline-danger">
+        </form>
+    </div>
+
+
+    <script>
+     // Define Function to Display Error Message
+     function printError(error_object, Errormsg){
+        document.getElementById(error_object).innerHTML = Errormsg;
+     }
+
+     //Define Function to Validate Form
+     function ValidateForm(){
+        event.preventDefault();
+
+        // Retrive Values
+        var name = document.contactform.name.value;
+        var email = document.contactform.email.value;
+        var phone = document.contactform.phone.value;
+        var gender = document.contactform.gender.value;
+        var ph = document.contactform.ph.value;
+        var hobbies = [];
+        var chbox = document.getElementsByName("hobbies[]");
+        for(var i = 0; i < chbox.length; i++){
+            if(chbox[i].checked){
+                hobbies.push(chbox[i].value);
+            }
+        }
+
+        // Define Error variables with a default value
+        var nameErr = true;
+        var emailErr = true;
+        var phoneErr = true;
+        var genderErr = true;
+        var passportErr = true;
+        //==========================This is For Name=====================================
+        if(name === ""){
+            printError("nameErr", "Enter your name");
+        } else {
+            var regex = /^[a-zA-Z\s]+$/;
+            if(regex.test(name)=== false){ // false means var did not pass the test
+                printError("nameErr", "Enter a valid name");
+            } else {
+                printError("nameErr", "");
+                nameErr = false;
+            }
+        }
+
+        //======================This is For Email================================
+        if(email === ""){
+            printError("emailErr", "Please enter an email address");
+        } else {
+            var regex_email = /^\S+@\S+\.\S+$/;
+        } if(regex_email.test(email)=== false){
+            printError("emailErr", "Please enter a valid email address (including @ an .)")
+        } else {
+            printError("emailErr", "");
+            emailErr = false;
+        }
+
+        //=============================This is For Phone=======================================================
+        if(phone === ""){
+            printError("phoneErr", "Please enter a phone number");
+        } else {
+            var regex_number = /^[0-9]\d{10}$/;
+            if(regex_number.test(phone) === false){
+                printError("phoneErr", "Please enter a valid phone number");
+            } else {
+                printError("phoneErr" , "");
+                phoneErr = false;
+            }
+        }
+
+        //=======================This is for Gender===========================================
+        if(gender === ""){
+            printError("genderErr" , "Please select a Gender")
+        } else {
+            printError("genderErr" , "");
+            genderErr = false;
+        }
+
+        //======================================This is for Passport======================================================================
+
+        if(ph === ""){
+            printError("passportErr" , "Please select your passport status");
+        } else {
+            printError("passportErr" , "");
+            passportErr = false;
+        }
+
+        if(nameErr || emailErr || phoneErr || genderErr || passportErr){
+            return false;
+        } else {
+            alert("All your inputs are filled correctly!!!");
+            return true;
+        }
+     }
+    </script>
+    <script src="./cdn/bootstrap/js/popper.min.js"></script>
+    <script src="./cdn/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
